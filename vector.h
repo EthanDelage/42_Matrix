@@ -1,4 +1,4 @@
-//  Copyright 2024 Delage Ethan
+//  Copyright (c) 2024 Ethan Delage
 #ifndef VECTOR_H_
 #define VECTOR_H_
 

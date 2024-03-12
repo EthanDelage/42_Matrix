@@ -1,4 +1,4 @@
-//  Copyright 2024 Delage Ethan
+//  Copyright (c) 2024 Ethan Delage
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
