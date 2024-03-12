@@ -205,10 +205,10 @@ template <typename K>
 std::ostream& operator<<(std::ostream& os, const Matrix<K>& matrix) {
     for (size_t row = 0; row < matrix.get_shape().row; ++row) {
         os << '[';
-        for (size_t column = 0; column < matrix.get_shape().column; ++column) {
+        for (size_t column = 0; column < matrix.get_shape().column - 1; ++column) {
             os << matrix[column][row] << ", ";
         }
-        os << "]\n";
+        os << matrix[matrix.get_shape().column - 1][row] << "]\n";
     }
     os << std::flush;
     return os;
