@@ -27,6 +27,9 @@ class Vector {
  public:
     explicit Vector(size_t size) : size_(size) {
         data_ = new K[size];
+        for (size_t i = 0; i < size; ++i) {
+            data_[i] = 0;
+        }
     }
 
     Vector(const Vector<K>& other) {

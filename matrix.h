@@ -40,6 +40,9 @@ class Matrix {
         data_ = new K*[row];
         for (size_t i = 0; i < row; ++i) {
             data_[i] = new K[column];
+            for (size_t j = 0; j < column; ++j) {
+                data_[i][j] = 0;
+            }
         }
     }
 
