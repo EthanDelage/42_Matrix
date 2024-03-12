@@ -7,5 +7,6 @@ int main() {
     matrix_code_constraints_tests();
     vector_ex00_tests();
     matrix_ex00_tests();
+    linear_combination_tests();
     return 0;
 }

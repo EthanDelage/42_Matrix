@@ -54,6 +54,13 @@ class Vector {
         return *this;
     }
 
+    Vector<K>& operator=(K* values) {
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] = values[i];
+        }
+        return *this;
+    }
+
     const K& operator[](size_t index) const {
         return data_[index];
     }
@@ -166,6 +173,16 @@ std::ostream& operator<<(std::ostream& os, const Vector<K>& vector) {
 template <typename K>
 Vector<K> operator*(K scalar, const Vector<K>& vector) {
     return vector * scalar;
+}
+
+template <typename K>
+Vector<K> linear_combination(Vector<K>* vectors, K* scalars, size_t nb_elems) {
+    Vector<K> result(vectors[0].get_size());
+
+    for (size_t i = 0; i < nb_elems; ++i) {
+        result += (vectors[i] * scalars[i]);
+    }
+    return result;
 }
 
 #endif  //  VECTOR_H_
