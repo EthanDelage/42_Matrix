@@ -23,6 +23,16 @@ class Matrix {
     shape_t shape_;
     K**     data_;
 
+    void validate_shape(const Matrix<K>& other) const {
+        shape_t other_shape;
+
+        other_shape = other.get_shape();
+        if (shape_.row != other_shape.row
+            || shape_.column != other_shape.column) {
+            throw MatrixException("Matrix shape mismatch");
+        }
+    }
+
  public:
     explicit Matrix(size_t row, size_t column) {
         shape_.row = row;
@@ -76,6 +86,70 @@ class Matrix {
         return data_[index];
     }
 
+    Matrix<K> operator+(const Matrix<K>& rhs) const {
+        validate_shape(rhs);
+        Matrix<K> result(shape_.row, shape_.column);
+
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                result[row][column] = data_[row][column] + rhs[row][column];
+            }
+        }
+        return result;
+    }
+
+    Matrix<K>& operator+=(const Matrix<K>& rhs) {
+        validate_shape(rhs);
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                data_[row][column] += rhs[row][column];
+            }
+        }
+        return *this;
+    }
+
+    Matrix<K> operator-(const Matrix<K>& rhs) const {
+        validate_shape(rhs);
+        Matrix<K> result(shape_.row, shape_.column);
+
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                result[row][column] = data_[row][column] - rhs[row][column];
+            }
+        }
+        return result;
+    }
+
+    Matrix<K>& operator-=(const Matrix<K>& rhs) {
+        validate_shape(rhs);
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                data_[row][column] -= rhs[row][column];
+            }
+        }
+        return *this;
+    }
+
+    Matrix<K> operator*(K scalar) const {
+        Matrix<K> result(shape_.row, shape_.column);
+
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                result[row][column] = scalar * data_[row][column];
+            }
+        }
+        return result;
+    }
+
+    Matrix<K>& operator*=(K scalar) {
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                data_[row][column] *= scalar;
+            }
+        }
+        return *this;
+    }
+
     shape_t get_shape() const {
         return shape_;
     }
@@ -120,6 +194,11 @@ std::ostream& operator<<(std::ostream& os, const Matrix<K>& matrix) {
     }
     os << std::flush;
     return os;
+}
+
+template <typename K>
+Matrix<K> operator*(K scalar, const Matrix<K>& matrix) {
+    return matrix * scalar;
 }
 
 #endif  //   MATRIX_H_

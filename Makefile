@@ -16,6 +16,7 @@ BUILD_DIR	=		.build/
 
 SRC			=		main.cc			\
 					tests/code_constraints.cc	\
+					tests/ex00.cc	\
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 

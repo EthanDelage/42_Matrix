@@ -2,7 +2,10 @@
 #ifndef VECTOR_H_
 #define VECTOR_H_
 
+#include <exception>
 #include <iostream>
+#include <string>
+#include <utility>
 
 #include "./matrix.h"
 
@@ -14,6 +17,12 @@ class Vector {
  private:
     size_t  size_;
     K*      data_;
+
+    void validate_size(const Vector<K>& other) const {
+        if (size_ != other.get_size()) {
+            throw VectorException("Vector size mismatch");
+        }
+    }
 
  public:
     explicit Vector(size_t size) : size_(size) {
@@ -50,6 +59,58 @@ class Vector {
         return data_[index];
     }
 
+    Vector<K> operator+(const Vector<K>& rhs) const {
+        validate_size(rhs);
+        Vector<K> result(size_);
+
+        for (size_t i = 0; i < size_; ++i) {
+            result[i] = data_[i] + rhs[i];
+        }
+        return result;
+    }
+
+    Vector<K>& operator+=(const Vector<K>& rhs) {
+        validate_size(rhs);
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] += rhs[i];
+        }
+        return *this;
+    }
+
+    Vector<K> operator-(const Vector<K>& rhs) const {
+        validate_size(rhs);
+        Vector<K> result(size_);
+
+        for (size_t i = 0; i < size_; ++i) {
+            result[i] = data_[i] - rhs[i];
+        }
+        return result;
+    }
+
+    Vector<K>& operator-=(const Vector<K>& rhs) {
+        validate_size(rhs);
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] -= rhs[i];
+        }
+        return *this;
+    }
+
+    Vector<K> operator*(K scalar) const {
+        Vector<K> result(size_);
+
+        for (size_t i = 0; i < size_; ++i) {
+            result[i] = scalar * data_[i];
+        }
+        return result;
+    }
+
+    Vector<K>& operator*=(K scalar) {
+        for (size_t i = 0; i < size_; ++i) {
+            data_[i] *= scalar;
+        }
+        return *this;
+    }
+
     size_t get_size() const {
         return size_;
     }
@@ -62,6 +123,18 @@ class Vector {
         }
         return matrix;
     }
+
+    class VectorException : public std::exception {
+     private:
+        std::string error_message_;
+     public:
+        explicit VectorException(std::string  error_message)
+                : error_message_(std::move(error_message)) {}
+
+        const char* what() const _NOEXCEPT {
+            return error_message_.c_str();
+        }
+    };
 };
 
 template <typename K>
@@ -70,6 +143,11 @@ std::ostream& operator<<(std::ostream& os, const Vector<K>& vector) {
         os << '[' << vector[i]<< ']' << std::endl;
     }
     return os;
+}
+
+template <typename K>
+Vector<K> operator*(K scalar, const Vector<K>& vector) {
+    return vector * scalar;
 }
 
 #endif  //  VECTOR_H_
