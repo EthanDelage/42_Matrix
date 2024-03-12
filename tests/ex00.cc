@@ -72,6 +72,22 @@ void vector_ex00_tests() {
     for (size_t i = 0; i < vec3.get_size(); ++i) {
         assert(result[i] == 2 * vec3[i]);
     }
+
+    result = vec3_bis;
+    result.add(vec3);
+    for (size_t i = 0; i < vec3.get_size(); ++i) {
+        assert(result[i] == vec3[i] + vec3_bis[i]);
+    }
+    result = vec3_bis;
+    result.sub(vec3);
+    for (size_t i = 0; i < vec3.get_size(); ++i) {
+        assert(result[i] == -vec3[i] + vec3_bis[i]);
+    }
+    result = vec3;
+    result.scale(2);
+    for (size_t i = 0; i < vec3.get_size(); ++i) {
+        assert(result[i] == 2 * vec3[i]);
+    }
 }
 
 void matrix_ex00_tests() {
@@ -147,6 +163,27 @@ void matrix_ex00_tests() {
     }
     result = mat3x3;
     result *= 2;
+    for (size_t i = 0; i < mat3x3.get_shape().row; ++i) {
+        for (size_t j = 0; j < mat3x3.get_shape().column; ++j) {
+            assert(result[i][j] == 2. * mat3x3[i][j]);
+        }
+    }
+    result = mat3x3;
+    result.add(mat3x3_bis);
+    for (size_t i = 0; i < mat3x3.get_shape().row; ++i) {
+        for (size_t j = 0; j < mat3x3.get_shape().column; ++j) {
+            assert(result[i][j] == mat3x3[i][j] + mat3x3_bis[i][j]);
+        }
+    }
+    result = mat3x3;
+    result.sub(mat3x3_bis);
+    for (size_t i = 0; i < mat3x3.get_shape().row; ++i) {
+        for (size_t j = 0; j < mat3x3.get_shape().column; ++j) {
+            assert(result[i][j] == mat3x3[i][j] - mat3x3_bis[i][j]);
+        }
+    }
+    result = mat3x3;
+    result.scale(2.);
     for (size_t i = 0; i < mat3x3.get_shape().row; ++i) {
         for (size_t j = 0; j < mat3x3.get_shape().column; ++j) {
             assert(result[i][j] == 2. * mat3x3[i][j]);

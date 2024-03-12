@@ -170,6 +170,21 @@ class Matrix {
         return vector;
     }
 
+    Matrix<K>& add(const Matrix<K>& matrix) {
+        *this += matrix;
+        return *this;
+    }
+
+    Matrix<K>& sub(const Matrix<K>& matrix) {
+        *this -= matrix;
+        return *this;
+    }
+
+    Matrix<K>& scale(K scalar) {
+        *this *= scalar;
+        return *this;
+    }
+
     class MatrixException : public std::exception {
      private:
         std::string error_message_;

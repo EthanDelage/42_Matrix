@@ -124,6 +124,21 @@ class Vector {
         return matrix;
     }
 
+    Vector<K>& add(const Vector<K>& vector) {
+        *this += vector;
+        return *this;
+    }
+
+    Vector<K>& sub(const Vector<K>& vector) {
+        *this -= vector;
+        return *this;
+    }
+
+    Vector<K>& scale(K scalar) {
+        *this *= scalar;
+        return *this;
+    }
+
     class VectorException : public std::exception {
      private:
         std::string error_message_;
