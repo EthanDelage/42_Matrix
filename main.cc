@@ -84,7 +84,6 @@ int main() {
         Vector<int> v1 = m3.to_vector();
 
         assert(v1.get_size() == 3);
-        std::cout << m3 << std::endl;
         for (size_t i = 0; i < m1.get_shape().row; ++i) {
             assert(v1[i] == m3[i][0]);
         }
