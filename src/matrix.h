@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-#include "./vector.h"
+#include "vector.h"
 
 template <class K>
 class Vector;

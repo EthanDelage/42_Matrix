@@ -7,7 +7,7 @@
 #include <string>
 #include <utility>
 
-#include "./matrix.h"
+#include "matrix.h"
 
 template <class K>
 class Matrix;

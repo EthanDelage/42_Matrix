@@ -3,7 +3,6 @@
 #include <cassert>
 
 #include "vector.h"
-#include "matrix.h"
 
 void linear_combination_tests() {
     Vector<float> v1(3);

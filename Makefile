@@ -4,9 +4,9 @@ NAME		=		matrix_test
 #	DIR
 #######################
 
-SRC_DIR		=		./
+SRC_DIR		=		src/
 
-INC_DIR		=		./
+INC_DIR		=		src/
 
 BUILD_DIR	=		.build/
 
