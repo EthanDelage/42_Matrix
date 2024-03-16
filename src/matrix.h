@@ -95,6 +95,17 @@ class Matrix {
         return *this;
     }
 
+    bool operator==(const Matrix<K>& other) const {
+        for (size_t row = 0; row < shape_.row; ++row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                if (data_[row][column] != other[row][column]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     const K* operator[](size_t index) const {
         return data_[index];
     }

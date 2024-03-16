@@ -8,5 +8,6 @@ int main() {
     vector_ex00_tests();
     matrix_ex00_tests();
     linear_combination_tests();
+    linear_interpolation_tests();
     return 0;
 }

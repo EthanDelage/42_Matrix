@@ -21,4 +21,9 @@ Vector<K> linear_combination(
     return result;
 }
 
+template <typename K>
+K linear_interpolation(const K& u, const K& v, float t) {
+    return u * (1 - t) + v * t;
+}
+
 #endif  //  SRC_ALGEBRA_H_

@@ -18,6 +18,7 @@ SRC			=		main.cc			\
 					tests/code_constraints.cc	\
 					tests/ex00.cc	\
 					tests/linear_combination.cc	\
+					tests/linear_interpolation.cc	\
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 
