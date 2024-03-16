@@ -1,13 +1,13 @@
 //  Copyright (c) 2024 Ethan Delage
-#ifndef MATRIX_H_
-#define MATRIX_H_
+#ifndef SRC_MATRIX_H_
+#define SRC_MATRIX_H_
 
 #include <exception>
 #include <iostream>
 #include <string>
 #include <utility>
 
-#include "vector.h"
+#include "./vector.h"
 
 template <class K>
 class Vector;
@@ -51,6 +51,20 @@ class Matrix {
     Matrix(const Matrix<K>& other) {
         data_ = nullptr;
         *this = other;
+    }
+
+    Matrix(std::initializer_list<std::initializer_list<K>> entries) {
+        shape_.row = entries.size();
+        shape_.column = entries.begin()->size();
+        data_ = new K*[shape_.row];
+
+        for (size_t i = 0; i < shape_.row; ++i) {
+            data_[i] = new K[shape_.column];
+
+            std::copy(
+                    entries.begin()[i].begin(),
+                    entries.begin()[i].end(), data_[i]);
+        }
     }
 
     ~Matrix() {
@@ -205,7 +219,10 @@ template <typename K>
 std::ostream& operator<<(std::ostream& os, const Matrix<K>& matrix) {
     for (size_t row = 0; row < matrix.get_shape().row; ++row) {
         os << '[';
-        for (size_t column = 0; column < matrix.get_shape().column - 1; ++column) {
+        for (
+                size_t column = 0;
+                column < matrix.get_shape().column - 1;
+                ++column) {
             os << matrix[column][row] << ", ";
         }
         os << matrix[matrix.get_shape().column - 1][row] << "]\n";
@@ -219,4 +236,4 @@ Matrix<K> operator*(K scalar, const Matrix<K>& matrix) {
     return matrix * scalar;
 }
 
-#endif  //   MATRIX_H_
+#endif  //  SRC_MATRIX_H_

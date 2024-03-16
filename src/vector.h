@@ -1,13 +1,14 @@
 //  Copyright (c) 2024 Ethan Delage
-#ifndef VECTOR_H_
-#define VECTOR_H_
+#ifndef SRC_VECTOR_H_
+#define SRC_VECTOR_H_
 
+#include <algorithm>
 #include <exception>
 #include <iostream>
 #include <string>
 #include <utility>
 
-#include "matrix.h"
+#include "./matrix.h"
 
 template <class K>
 class Matrix;
@@ -17,12 +18,6 @@ class Vector {
  private:
     size_t  size_;
     K*      data_;
-
-    void validate_size(const Vector<K>& other) const {
-        if (size_ != other.get_size()) {
-            throw VectorException("Vector size mismatch");
-        }
-    }
 
  public:
     explicit Vector(size_t size) : size_(size) {
@@ -35,6 +30,11 @@ class Vector {
     Vector(const Vector<K>& other) {
         data_ = nullptr;
         *this = other;
+    }
+
+    Vector(std::initializer_list<K> entries)
+    : size_(entries.size()), data_(new K[size_]) {
+        std::copy(entries.begin(), entries.end(), data_);
     }
 
     ~Vector() {
@@ -59,6 +59,15 @@ class Vector {
             data_[i] = values[i];
         }
         return *this;
+    }
+
+    bool operator==(const Vector<K>& other) const {
+        for (size_t i = 0; i < size_; ++i) {
+            if (data_[i] != other[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     const K& operator[](size_t index) const {
@@ -149,6 +158,12 @@ class Vector {
         return *this;
     }
 
+    void validate_size(const Vector<K>& other) const {
+        if (size_ != other.get_size()) {
+            throw VectorException("Vector size mismatch");
+        }
+    }
+
     class VectorException : public std::exception {
      private:
         std::string error_message_;
@@ -175,14 +190,4 @@ Vector<K> operator*(K scalar, const Vector<K>& vector) {
     return vector * scalar;
 }
 
-template <typename K>
-Vector<K> linear_combination(Vector<K>* vectors, K* scalars, size_t nb_elems) {
-    Vector<K> result(vectors[0].get_size());
-
-    for (size_t i = 0; i < nb_elems; ++i) {
-        result += (vectors[i] * scalars[i]);
-    }
-    return result;
-}
-
-#endif  //  VECTOR_H_
+#endif  //  SRC_VECTOR_H_

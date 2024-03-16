@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "vector.h"
+#include "./algebra.h"
 
 void linear_combination_tests() {
     Vector<float> v1(3);

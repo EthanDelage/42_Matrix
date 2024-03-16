@@ -3,8 +3,8 @@
 #include <iostream>
 #include <cassert>
 
-#include "vector.h"
-#include "matrix.h"
+#include "./vector.h"
+#include "./matrix.h"
 
 void vector_code_constraints_tests() {
     Vector<int> v1(3);
@@ -50,7 +50,8 @@ void matrix_code_constraints_tests() {
     for (size_t i = 0; i < m1.get_shape().row; ++i) {
         for (size_t j = 0; j < m1.get_shape().column; ++j) {
             m1[i][j] = static_cast<int>(i * m1.get_shape().column + j + 1);
-            assert(m1[i][j] == static_cast<int>(i * m1.get_shape().column + j + 1));
+            assert(m1[i][j]
+                   == static_cast<int>(i * m1.get_shape().column + j + 1));
         }
     }
 

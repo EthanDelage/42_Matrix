@@ -2,8 +2,8 @@
 
 #include <cassert>
 
-#include "vector.h"
-#include "matrix.h"
+#include "./vector.h"
+#include "./matrix.h"
 
 void vector_ex00_tests() {
     Vector<int> vec3(3);
