@@ -9,6 +9,8 @@
 
 #include "./vector.h"
 
+#define MATRIX_SHAPE_MISMATCH   "Matrix shape mismatch"
+
 template <class K>
 class Vector;
 
@@ -17,6 +19,10 @@ class Matrix {
     typedef struct shape_s {
         size_t row;
         size_t column;
+
+        bool operator==(const shape_s& rhs) const {
+            return (row == rhs.row && column == rhs.column);
+        }
     } shape_t;
 
  private:
@@ -27,9 +33,8 @@ class Matrix {
         shape_t other_shape;
 
         other_shape = other.get_shape();
-        if (shape_.row != other_shape.row
-            || shape_.column != other_shape.column) {
-            throw MatrixException("Matrix shape mismatch");
+        if (shape_ != other_shape) {
+            throw MatrixException(MATRIX_SHAPE_MISMATCH);
         }
     }
 
@@ -96,10 +101,10 @@ class Matrix {
         return *this;
     }
 
-    bool operator==(const Matrix<K>& other) const {
+    bool operator==(const Matrix<K>& rhs) const {
         for (size_t row = 0; row < shape_.row; ++row) {
             for (size_t column = 0; column < shape_.column; ++column) {
-                if (data_[row][column] != other[row][column]) {
+                if (data_[row][column] != rhs[row][column]) {
                     return false;
                 }
             }

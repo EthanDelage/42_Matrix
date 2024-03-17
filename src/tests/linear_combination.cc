@@ -14,12 +14,8 @@ void linear_combination_tests() {
     Vector<float> vectors_list[] = {v1, v2, v3};
     float scalars_value[] = {10., -2., 0.5};
 
-    float e1_values[] = {1., 2., 3.};
-    Vector<float> e1(3);
-    e1 = e1_values;
-    float e2_values[]= {0., 10., -100.};
-    Vector<float> e2(3);
-    e2 = e2_values;
+    Vector<float> e1({1., 2., 3.});
+    Vector<float> e2({0., 10., -100.});
     Vector<float> vectors_list_bis[] = {e1, e2};
 
     Vector<float> result = linear_combination(vectors_list, scalars_value, 3);

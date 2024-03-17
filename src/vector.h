@@ -64,16 +64,9 @@ class Vector {
         return *this;
     }
 
-    Vector<K>& operator=(K* values) {
-        foreach([values](K& elem, size_t i) {
-            elem = values[i];
-        });
-        return *this;
-    }
-
-    bool operator==(const Vector<K>& other) const {
+    bool operator==(const Vector<K>& rhs) const {
         for (size_t i = 0; i < size_; ++i) {
-            if (data_[i] != other[i]) {
+            if (data_[i] != rhs[i]) {
                 return false;
             }
         }

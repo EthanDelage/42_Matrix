@@ -37,11 +37,6 @@ void vector_code_constraints_tests() {
     for (size_t i = 0; i < m1.get_shape().row; ++i) {
         assert(m1[i][0] == v1[i]);
     }
-
-    std::cout << "Vector:" << std::endl;
-    std::cout << v1 << std::endl;
-    std::cout << "Matrix:" << std::endl;
-    std::cout << m1;
 }
 
 void matrix_code_constraints_tests() {
@@ -97,10 +92,4 @@ void matrix_code_constraints_tests() {
     for (size_t i = 0; i < m1.get_shape().row; ++i) {
         assert(v1[i] == m3[i][0]);
     }
-
-    std::cout << "Matrix:" << std::endl;
-    std::cout << m1;
-
-    std::cout << "Vector:" << std::endl;
-    std::cout << v1;
 }
