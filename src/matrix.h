@@ -63,7 +63,8 @@ class Matrix {
 
             std::copy(
                     entries.begin()[i].begin(),
-                    entries.begin()[i].end(), data_[i]);
+                    entries.begin()[i].end(),
+                    data_[i]);
         }
     }
 

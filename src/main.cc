@@ -9,5 +9,6 @@ int main() {
     matrix_ex00_tests();
     linear_combination_tests();
     linear_interpolation_tests();
+    dot_product_tests();
     return 0;
 }

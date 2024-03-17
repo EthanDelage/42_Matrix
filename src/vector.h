@@ -10,6 +10,8 @@
 
 #include "./matrix.h"
 
+#define VECTOR_SIZE_MISMATCH   "Vector size mismatch"
+
 template <class K>
 class Matrix;
 
@@ -51,6 +53,14 @@ class Vector {
         for (size_t i = 0; i < size_; ++i) {
             data_[i] = other[i];
         }
+        return *this;
+    }
+
+    Vector<K>& operator=(std::initializer_list<K> entries) {
+        if (size_ != entries.size()) {
+            throw VectorException(VECTOR_SIZE_MISMATCH);
+        }
+        std::copy(entries.begin(), entries.end(), data_);
         return *this;
     }
 
@@ -158,9 +168,20 @@ class Vector {
         return *this;
     }
 
+    K dot(const Vector<K>& vector) {
+        validate_size(vector);
+        K result;
+
+        result = 0;
+        for (size_t i = 0; i < size_; ++i) {
+            result = std::fma(data_[i], vector[i], result);
+        }
+        return result;
+    }
+
     void validate_size(const Vector<K>& other) const {
         if (size_ != other.get_size()) {
-            throw VectorException("Vector size mismatch");
+            throw VectorException(VECTOR_SIZE_MISMATCH);
         }
     }
 

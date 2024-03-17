@@ -9,5 +9,6 @@ void vector_ex00_tests();
 void matrix_ex00_tests();
 void linear_combination_tests();
 void linear_interpolation_tests();
+void dot_product_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_
