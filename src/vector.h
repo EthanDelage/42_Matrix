@@ -24,9 +24,9 @@ class Vector {
  public:
     explicit Vector(size_t size) : size_(size) {
         data_ = new K[size];
-        for (size_t i = 0; i < size; ++i) {
-            data_[i] = 0;
-        }
+        foreach([](K& elem) {
+            elem = 0;
+        });
     }
 
     Vector(const Vector<K>& other) {
@@ -50,9 +50,9 @@ class Vector {
         delete[] data_;
         size_ = other.size_;
         data_ = new K[size_];
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] = other[i];
-        }
+        foreach([&other](K& elem, size_t i) {
+            elem = other[i];
+        });
         return *this;
     }
 
@@ -65,9 +65,9 @@ class Vector {
     }
 
     Vector<K>& operator=(K* values) {
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] = values[i];
-        }
+        foreach([values](K& elem, size_t i) {
+            elem = values[i];
+        });
         return *this;
     }
 
@@ -92,17 +92,17 @@ class Vector {
         validate_size(rhs);
         Vector<K> result(size_);
 
-        for (size_t i = 0; i < size_; ++i) {
-            result[i] = data_[i] + rhs[i];
-        }
+        result.foreach([this, rhs](K& elem, size_t i) {
+            elem = (*this)[i] + rhs[i];
+        });
         return result;
     }
 
     Vector<K>& operator+=(const Vector<K>& rhs) {
         validate_size(rhs);
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] += rhs[i];
-        }
+        foreach([rhs](K& elem, size_t i) {
+            elem += rhs[i];
+        });
         return *this;
     }
 
@@ -110,33 +110,33 @@ class Vector {
         validate_size(rhs);
         Vector<K> result(size_);
 
-        for (size_t i = 0; i < size_; ++i) {
-            result[i] = data_[i] - rhs[i];
-        }
+        result.foreach([this, rhs](K& elem, size_t i) {
+            elem = (*this)[i] - rhs[i];
+        });
         return result;
     }
 
     Vector<K>& operator-=(const Vector<K>& rhs) {
         validate_size(rhs);
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] -= rhs[i];
-        }
+        foreach([rhs](K& elem, size_t i) {
+            elem -= rhs[i];
+        });
         return *this;
     }
 
     Vector<K> operator*(K scalar) const {
         Vector<K> result(size_);
 
-        for (size_t i = 0; i < size_; ++i) {
-            result[i] = scalar * data_[i];
-        }
+        result.foreach([this, scalar](K& elem, size_t i) {
+            elem = scalar * (*this)[i];
+        });
         return result;
     }
 
     Vector<K>& operator*=(K scalar) {
-        for (size_t i = 0; i < size_; ++i) {
-            data_[i] *= scalar;
-        }
+        foreach([&scalar](K& elem) {
+            elem *= scalar;
+        });
         return *this;
     }
 
@@ -147,9 +147,9 @@ class Vector {
     Matrix<K> to_matrix() {
         Matrix<K> matrix(size_, 1);
 
-        for (size_t i = 0; i < size_; ++i) {
-            matrix[i][0] = data_[i];
-        }
+        foreach([&matrix](K& elem, size_t i) {
+            matrix[i][0] = elem;
+        });
         return matrix;
     }
 
@@ -182,6 +182,22 @@ class Vector {
     void validate_size(const Vector<K>& other) const {
         if (size_ != other.get_size()) {
             throw VectorException(VECTOR_SIZE_MISMATCH);
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f)
+            -> std::enable_if_t<std::is_invocable_v<Function, K&>> {
+        for (size_t i = 0; i < size_; ++i) {
+            f(data_[i]);
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f)
+            -> std::enable_if_t<std::is_invocable_v<Function, K&, size_t>> {
+        for (size_t i = 0; i < size_; ++i) {
+            f(data_[i], i);
         }
     }
 

@@ -18,11 +18,11 @@ Vector<K> linear_combination(
     size = vectors[0].get_size();
     Vector<K> result(size);
 
-    for (size_t i = 0; i < nb_elems; ++i) {
-        for (size_t j = 0; j < size; ++j) {
-            result[j] = std::fma(vectors[i][j], scalars[i], result[j]);
-        }
-    }
+    result.foreach([vectors, scalars, nb_elems](K& elem, size_t j) {
+         for (size_t i = 0; i < nb_elems; ++i) {
+             elem = std::fma(vectors[i][j], scalars[i], elem);
+         }
+    });
     return result;
 }
 
