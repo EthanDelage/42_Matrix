@@ -16,7 +16,7 @@ BUILD_DIR	=		.build/
 
 SRC			=		main.cc			\
 					tests/code_constraints.cc	\
-					tests/ex00.cc	\
+					tests/basic_arithmetic.cc	\
 					tests/linear_combination.cc	\
 					tests/linear_interpolation.cc	\
 
