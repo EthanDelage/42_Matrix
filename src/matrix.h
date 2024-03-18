@@ -101,6 +101,23 @@ class Matrix {
         return *this;
     }
 
+    Matrix<K>& operator=(
+            std::initializer_list<std::initializer_list<K>> entries) {
+        shape_t entries_shape;
+
+        entries_shape.row = entries.size();
+        entries_shape.column = entries.begin()->size();
+        if (shape_ != entries_shape) {
+            throw MatrixException(MATRIX_SHAPE_MISMATCH);
+        }
+        foreach([entries](K& elem, size_t i) {
+            std::copy(
+                 entries.begin()[i].begin(),
+                 entries.begin()[i].end(),
+                 elem);
+        });
+    }
+
     bool operator==(const Matrix<K>& rhs) const {
         for (size_t row = 0; row < shape_.row; ++row) {
             for (size_t column = 0; column < shape_.column; ++column) {
@@ -217,6 +234,38 @@ class Matrix {
     Matrix<K>& scale(K scalar) {
         *this *= scalar;
         return *this;
+    }
+
+    template <typename Function>
+    auto foreach(Function f)
+            -> std::enable_if_t<std::is_invocable_v<Function, K&>> {
+        for (size_t i = 0; i < shape_.row; ++i) {
+            for (size_t j = 0; j < shape_.column; ++j) {
+                f(data_[i][j]);
+            }
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f)
+            -> std::enable_if_t<std::is_invocable_v<Function, K&, size_t>> {
+        for (size_t i = 0; i < shape_.row; ++i) {
+            f(data_[i]);
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f)
+            -> std::enable_if_t<std::is_invocable_v<
+                    Function,
+                    K&,
+                    size_t,
+                    size_t>> {
+        for (size_t i = 0; i < shape_.row; ++i) {
+            for (size_t j = 0; j < shape_.column; ++j) {
+                f(data_[i][j], i, j);
+            }
+        }
     }
 
     class MatrixException : public std::exception {
