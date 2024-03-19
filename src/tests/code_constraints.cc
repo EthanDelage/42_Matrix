@@ -9,6 +9,7 @@
 void vector_code_constraints_tests() {
     Vector<int> v1(3);
 
+    assert(v1[0] == 0 && v1[1] == 0 && v1[2] == 0);
     for (size_t i = 0; i < v1.get_size(); ++i) {
         v1[i] = static_cast<int>(i) + 1;
         assert(v1[i] == static_cast<int>(i) + 1);

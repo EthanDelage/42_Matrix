@@ -19,7 +19,8 @@ SRC			=		main.cc			\
 					tests/basic_arithmetic.cc	\
 					tests/linear_combination.cc	\
 					tests/linear_interpolation.cc	\
-					tests/dot_product.cc
+					tests/dot_product.cc	\
+					tests/norm.cc
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 

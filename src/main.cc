@@ -10,5 +10,6 @@ int main() {
     linear_combination_tests();
     linear_interpolation_tests();
     dot_product_tests();
+    vector_norm_tests();
     return 0;
 }

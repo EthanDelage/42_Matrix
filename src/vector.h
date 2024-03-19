@@ -25,7 +25,7 @@ class Vector {
     explicit Vector(size_t size) : size_(size) {
         data_ = new K[size];
         foreach([](K& elem) {
-            elem = 0;
+            elem = K();
         });
     }
 
@@ -133,6 +133,10 @@ class Vector {
         return *this;
     }
 
+    K operator*(const Vector<K>& rhs) const {
+        return this->dot(rhs);
+    }
+
     size_t get_size() const {
         return size_;
     }
@@ -161,15 +165,54 @@ class Vector {
         return *this;
     }
 
-    K dot(const Vector<K>& vector) {
+    K dot(const Vector<K>& vector) const {
         validate_size(vector);
-        K result;
+        K result = K();
 
-        result = 0;
         for (size_t i = 0; i < size_; ++i) {
             result = std::fma(data_[i], vector[i], result);
         }
         return result;
+    }
+
+    K taxicab_norm() {
+        K result = K();
+
+        foreach([&result](K& elem) {
+            if (elem < 0)
+                result -= elem;
+            else
+                result += elem;
+        });
+        return result;
+    }
+
+    K euclidean_norm() {
+        K result = K();
+
+        foreach([&result](K& elem) {
+            result = std::fma(elem, elem, result);
+        });
+        result = std::sqrt(result);
+        return result;
+    }
+
+    K uniform_norm() {
+        K maximum;
+
+        if (data_[0] < 0) {
+            maximum = -data_[0];
+        } else {
+            maximum = data_[0];
+        }
+        foreach([&maximum](K& elem) {
+            if (elem > maximum) {
+                maximum = elem;
+            } else if (-elem > maximum) {
+                maximum = -elem;
+            }
+        });
+        return maximum;
     }
 
     void validate_size(const Vector<K>& other) const {
