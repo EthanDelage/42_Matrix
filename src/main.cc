@@ -11,5 +11,6 @@ int main() {
     linear_interpolation_tests();
     dot_product_tests();
     vector_norm_tests();
+    angle_cos_tests();
     return 0;
 }

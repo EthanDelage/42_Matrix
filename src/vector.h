@@ -175,7 +175,7 @@ class Vector {
         return result;
     }
 
-    K taxicab_norm() {
+    K taxicab_norm() const {
         K result = K();
 
         foreach([&result](K& elem) {
@@ -187,7 +187,7 @@ class Vector {
         return result;
     }
 
-    K euclidean_norm() {
+    K euclidean_norm() const {
         K result = K();
 
         foreach([&result](K& elem) {
@@ -197,22 +197,19 @@ class Vector {
         return result;
     }
 
-    K uniform_norm() {
+    K uniform_norm() const {
         K maximum;
 
-        if (data_[0] < 0) {
-            maximum = -data_[0];
-        } else {
-            maximum = data_[0];
-        }
+        maximum = std::max(data_[0], -data_[0]);
         foreach([&maximum](K& elem) {
-            if (elem > maximum) {
-                maximum = elem;
-            } else if (-elem > maximum) {
-                maximum = -elem;
-            }
+            maximum = std::max(maximum, elem);
+            maximum = std::max(maximum, -elem);
         });
         return maximum;
+    }
+
+    float angle_cos(const Vector<K>& other) const {
+        return this->dot(other) / (this->euclidean_norm() * other.euclidean_norm());
     }
 
     void validate_size(const Vector<K>& other) const {
@@ -232,6 +229,22 @@ class Vector {
     template <typename Function>
     auto foreach(Function f)
             -> std::enable_if_t<std::is_invocable_v<Function, K&, size_t>> {
+        for (size_t i = 0; i < size_; ++i) {
+            f(data_[i], i);
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f) const
+    -> std::enable_if_t<std::is_invocable_v<Function, K&>> {
+        for (size_t i = 0; i < size_; ++i) {
+            f(data_[i]);
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f) const
+    -> std::enable_if_t<std::is_invocable_v<Function, K&, size_t>> {
         for (size_t i = 0; i < size_; ++i) {
             f(data_[i], i);
         }
