@@ -10,7 +10,8 @@
 
 #include "./matrix.h"
 
-#define VECTOR_SIZE_MISMATCH   "Vector size mismatch"
+#define VECTOR_SIZE_MISMATCH_ERROR  "Vector size mismatch"
+#define VECTOR_SIZE_NOT_3_ERROR     "Input vectors must be of size 3"
 
 template <class K>
 class Matrix;
@@ -58,7 +59,7 @@ class Vector {
 
     Vector<K>& operator=(std::initializer_list<K> entries) {
         if (size_ != entries.size()) {
-            throw VectorException(VECTOR_SIZE_MISMATCH);
+            throw VectorException(VECTOR_SIZE_MISMATCH_ERROR);
         }
         std::copy(entries.begin(), entries.end(), data_);
         return *this;
@@ -212,9 +213,21 @@ class Vector {
         return this->dot(other) / (this->euclidean_norm() * other.euclidean_norm());
     }
 
+    Vector<K> cross_product(const Vector<K>& other) {
+        if (size_ != 3 || other.get_size() != 3) {
+            throw VectorException(VECTOR_SIZE_NOT_3_ERROR);
+        }
+        Vector<K> result(3);
+
+        result[0] = data_[1] * other[2] - data_[2] * other[1];
+        result[1] = data_[2] * other[0] - data_[0] * other[2];
+        result[2] = data_[0] * other[1] - data_[1] * other[0];
+        return result;
+    }
+
     void validate_size(const Vector<K>& other) const {
         if (size_ != other.get_size()) {
-            throw VectorException(VECTOR_SIZE_MISMATCH);
+            throw VectorException(VECTOR_SIZE_MISMATCH_ERROR);
         }
     }
 

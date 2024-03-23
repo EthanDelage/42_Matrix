@@ -12,5 +12,6 @@ int main() {
     dot_product_tests();
     vector_norm_tests();
     angle_cos_tests();
+    cross_product_tests();
     return 0;
 }

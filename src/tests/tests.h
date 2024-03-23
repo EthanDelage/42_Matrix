@@ -12,5 +12,6 @@ void linear_interpolation_tests();
 void dot_product_tests();
 void vector_norm_tests();
 void angle_cos_tests();
+void cross_product_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_
