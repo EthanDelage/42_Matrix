@@ -25,7 +25,8 @@ SRC			=		main.cc			\
 					tests/cross_product.cc	\
 					tests/linear_map.cc	\
 					tests/matrix_multiplication.cc	\
-					tests/trace.cc
+					tests/trace.cc	\
+					tests/transpose.cc
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 

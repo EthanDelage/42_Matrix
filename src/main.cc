@@ -16,5 +16,6 @@ int main() {
     linear_map_tests();
     matrix_multiplication_tests();
     trace_tests();
+    transpose_tests();
     return 0;
 }

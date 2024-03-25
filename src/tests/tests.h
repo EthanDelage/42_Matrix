@@ -16,5 +16,6 @@ void cross_product_tests();
 void linear_map_tests();
 void matrix_multiplication_tests();
 void trace_tests();
+void transpose_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_
