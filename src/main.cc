@@ -14,6 +14,7 @@ int main() {
     angle_cos_tests();
     cross_product_tests();
     linear_map_tests();
-    matrix_multiplication();
+    matrix_multiplication_tests();
+    trace_tests();
     return 0;
 }

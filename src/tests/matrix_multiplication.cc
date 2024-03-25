@@ -4,7 +4,7 @@
 
 #include "./matrix.h"
 
-void matrix_multiplication() {
+void matrix_multiplication_tests() {
     Matrix<float> m1({{1., 0.}, {0., 1.}});
     Matrix<float> m2(m1);
 

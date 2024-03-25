@@ -292,6 +292,18 @@ class Matrix {
         return *this;
     }
 
+    K trace() const {
+        if (!is_square()) {
+            throw MatrixException(MATRIX_NOT_SQUARE);
+        }
+        K result = K();
+
+        for (size_t i = 0; i < shape_.row; ++i) {
+            result += data_[i][i];
+        }
+        return result;
+    }
+
     template <typename Function>
     auto foreach(Function f)
             -> std::enable_if_t<std::is_invocable_v<Function, K&>> {
