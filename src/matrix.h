@@ -9,7 +9,9 @@
 
 #include "./vector.h"
 
-#define MATRIX_SHAPE_MISMATCH   "Matrix shape mismatch"
+#define MATRIX_SHAPE_MISMATCH       "Matrix shape mismatch"
+#define MATRIX_VECTOR_SIZE_MISMATCH "Size mismatch for matrix-vector multiplication"
+#define MATRIX_NOT_SQUARE           "Matrix is not square. Matrix multiplication requires both matrices to be square"
 
 template <class K>
 class Vector;
@@ -35,6 +37,18 @@ class Matrix {
         other_shape = other.get_shape();
         if (shape_ != other_shape) {
             throw MatrixException(MATRIX_SHAPE_MISMATCH);
+        }
+    }
+
+    void validate_size(const Vector<K>& other) const {
+        if (shape_.column != other.get_size()) {
+            throw MatrixException(MATRIX_VECTOR_SIZE_MISMATCH);
+        }
+    }
+
+    void validate_multiplication(const Matrix<K>& other) const {
+        if (shape_.column != other.get_shape().row) {
+            throw MatrixException(MATRIX_VECTOR_SIZE_MISMATCH);
         }
     }
 
@@ -110,12 +124,16 @@ class Matrix {
         if (shape_ != entries_shape) {
             throw MatrixException(MATRIX_SHAPE_MISMATCH);
         }
-        foreach([entries](K& elem, size_t i) {
-            std::copy(
-                 entries.begin()[i].begin(),
-                 entries.begin()[i].end(),
-                 elem);
-        });
+        size_t i = 0;
+        for (const auto& row : entries) {
+            size_t j = 0;
+            for (const auto& elem : row) {
+                data_[i][j] = elem;
+                ++j;
+            }
+            ++i;
+        }
+        return *this;
     }
 
     bool operator==(const Matrix<K>& rhs) const {
@@ -199,6 +217,44 @@ class Matrix {
             }
         }
         return *this;
+    }
+
+    Matrix<K>& operator*=(const Matrix<K>& rhs) {
+        if (!is_square()) {
+            throw MatrixException(MATRIX_NOT_SQUARE);
+        }
+
+        Matrix<K> result((*this) * rhs);
+
+        *this = result;
+        return *this;
+    }
+
+    Matrix<K> operator*(const Matrix<K>& rhs) const {
+        validate_multiplication(rhs);
+        shape_t rhs_shape = rhs.get_shape();
+        Matrix<K> result(shape_.row, rhs_shape.column);
+
+
+        result.foreach(
+                [this, rhs, rhs_shape](K& elem, size_t row, size_t column) {
+            for (size_t i = 0; i < rhs_shape.column; ++i) {
+                elem = std::fma((*this)[row][i], rhs[i][column], elem);
+            }
+        });
+        return result;
+    }
+
+    Vector<K> operator*(const Vector<K>& rhs) const {
+        validate_size(rhs);
+        Vector<K> result(shape_.row);
+
+        result.foreach([this, rhs](K& elem, size_t row) {
+            for (size_t column = 0; column < shape_.column; ++column) {
+                elem = std::fma(data_[row][column], rhs[column], elem);
+            }
+        });
+        return result;
     }
 
     shape_t get_shape() const {

@@ -13,5 +13,7 @@ int main() {
     vector_norm_tests();
     angle_cos_tests();
     cross_product_tests();
+    linear_map_tests();
+    matrix_multiplication();
     return 0;
 }
