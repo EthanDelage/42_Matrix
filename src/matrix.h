@@ -366,9 +366,9 @@ std::ostream& operator<<(std::ostream& os, const Matrix<K>& matrix) {
                 size_t column = 0;
                 column < matrix.get_shape().column - 1;
                 ++column) {
-            os << matrix[column][row] << ", ";
+            os << matrix[row][column] << ", ";
         }
-        os << matrix[matrix.get_shape().column - 1][row] << "]\n";
+        os << matrix[row][matrix.get_shape().column - 1] << "]\n";
     }
     os << std::flush;
     return os;
