@@ -56,6 +56,10 @@ class Matrix {
         std::swap(data_[first], data_[second]);
     }
 
+    K det2() const {
+        return data_[0][0] * data_[1][1] - data_[0][1] * data_[1][0];
+    }
+
  public:
     explicit Matrix(size_t row, size_t column) {
         shape_.row = row;
@@ -345,6 +349,35 @@ class Matrix {
             }
         }
         return *this;
+    }
+
+    K determinant() const {
+        if (!is_square()) {
+            throw MatrixException(MATRIX_NOT_SQUARE);
+        }
+        switch (shape_.row) {
+            case 1:
+                return data_[0][0];
+            case 2:
+                return det2();
+            default:
+                K determinant = K();
+
+                for (size_t i = 0; i < shape_.column; ++i) {
+                    Matrix<K> sub_matrix(shape_.row - 1, shape_.column - 1);
+
+                    sub_matrix.foreach([this, i](K& elem,
+                            size_t row,
+                            size_t column) {
+                        elem = data_[row + 1][(column < i) ? column : column + 1];
+                    });
+                    determinant += (
+                            ((i % 2) ? -1 : 1)
+                            * data_[0][i]
+                            * sub_matrix.determinant());
+                }
+                return determinant;
+        }
     }
 
     template <typename Function>

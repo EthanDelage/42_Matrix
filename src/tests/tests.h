@@ -18,5 +18,6 @@ void matrix_multiplication_tests();
 void trace_tests();
 void transpose_tests();
 void row_echelon_tests();
+void determinant_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_

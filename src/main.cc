@@ -18,5 +18,6 @@ int main() {
     trace_tests();
     transpose_tests();
     row_echelon_tests();
+    determinant_tests();
     return 0;
 }
