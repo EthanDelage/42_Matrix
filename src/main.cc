@@ -17,5 +17,6 @@ int main() {
     matrix_multiplication_tests();
     trace_tests();
     transpose_tests();
+    row_echelon_tests();
     return 0;
 }

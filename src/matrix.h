@@ -52,6 +52,10 @@ class Matrix {
         }
     }
 
+    void swap_row(size_t first, size_t second) {
+        std::swap(data_[first], data_[second]);
+    }
+
  public:
     explicit Matrix(size_t row, size_t column) {
         shape_.row = row;
@@ -311,6 +315,36 @@ class Matrix {
             elem = data_[column][row];
         });
         return transpose;
+    }
+
+    Matrix<K>& row_echelon() {
+        size_t pivot_row = 0;
+        K pivot;
+        K factor;
+
+        for (size_t column = 0; column < shape_.column && pivot_row < shape_.row; ++column) {
+            for (size_t row = pivot_row; row < shape_.row; ++row) {
+                if (data_[row][column] != 0) {
+                    pivot = data_[row][column];
+                    if (row != pivot_row) {
+                        swap_row(pivot_row, row);
+                    }
+                    for (size_t j = 0; j < shape_.column; ++j) {
+                        data_[pivot_row][j] /= pivot;
+                    }
+                    for (size_t i = 0; i < shape_.row; ++i) {
+                        if (i != pivot_row) {
+                            factor = data_[i][column];
+                            for (size_t j = column; j < shape_.column; ++j) {
+                                data_[i][j] -= (factor * data_[pivot_row][j]);
+                            }
+                        }
+                    }
+                    ++pivot_row;
+                }
+            }
+        }
+        return *this;
     }
 
     template <typename Function>
