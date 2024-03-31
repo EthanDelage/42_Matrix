@@ -12,6 +12,7 @@
 #define MATRIX_SHAPE_MISMATCH       "Matrix shape mismatch"
 #define MATRIX_VECTOR_SIZE_MISMATCH "Size mismatch for matrix-vector multiplication"
 #define MATRIX_NOT_SQUARE           "Matrix is not square. Matrix multiplication requires both matrices to be square"
+#define MATRIX_NOT_INVERTIBLE       "Matrix is not invertible"
 
 template <class K>
 class Vector;
@@ -380,6 +381,30 @@ class Matrix {
         }
     }
 
+    Matrix<K> inverse() const {
+        if (determinant() == 0) {
+            throw MatrixException(MATRIX_NOT_INVERTIBLE);
+        }
+        size_t dimension = shape_.row;
+        Matrix<K> augmented(dimension, 2 * dimension);
+        Matrix<K> result(shape_);
+
+        for (size_t row = 0; row < dimension; ++row) {
+            for (size_t column = 0; column < dimension; ++column) {
+                augmented[row][column] = data_[row][column];
+            }
+        }
+        for (size_t i = 0; i < dimension; ++i) {
+            augmented[i][dimension + i] = 1.;
+        }
+        augmented.row_echelon();
+
+        result.foreach([augmented, dimension](K& elem, size_t row, size_t column) {
+            elem = augmented[row][dimension + column];
+        });
+        return result;
+    }
+
     template <typename Function>
     auto foreach(Function f)
             -> std::enable_if_t<std::is_invocable_v<Function, K&>> {
@@ -405,6 +430,20 @@ class Matrix {
                     K&,
                     size_t,
                     size_t>> {
+        for (size_t i = 0; i < shape_.row; ++i) {
+            for (size_t j = 0; j < shape_.column; ++j) {
+                f(data_[i][j], i, j);
+            }
+        }
+    }
+
+    template <typename Function>
+    auto foreach(Function f) const
+    -> std::enable_if_t<std::is_invocable_v<
+            Function,
+            K&,
+            size_t,
+            size_t>> {
         for (size_t i = 0; i < shape_.row; ++i) {
             for (size_t j = 0; j < shape_.column; ++j) {
                 f(data_[i][j], i, j);

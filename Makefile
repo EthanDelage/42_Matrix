@@ -15,6 +15,7 @@ BUILD_DIR	=		.build/
 #######################
 
 SRC			=		main.cc			\
+					tests/tests.cc	\
 					tests/code_constraints.cc	\
 					tests/basic_arithmetic.cc	\
 					tests/linear_combination.cc	\
@@ -28,7 +29,8 @@ SRC			=		main.cc			\
 					tests/trace.cc	\
 					tests/transpose.cc	\
 					tests/row_echelon.cc	\
-					tests/determinant.cc
+					tests/determinant.cc	\
+					tests/inverse.cc
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 

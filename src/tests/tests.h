@@ -3,6 +3,13 @@
 #ifndef SRC_TESTS_TESTS_H_
 #define SRC_TESTS_TESTS_H_
 
+#include "./matrix.h"
+
+void assert_float(float a, float b, float epsilon = 1e-5);
+void assert_float_matrix(const Matrix<float>& a,
+                         const Matrix<float>& b,
+                         float epsilon = 1e-5);
+
 void vector_code_constraints_tests();
 void matrix_code_constraints_tests();
 void vector_ex00_tests();
@@ -19,5 +26,6 @@ void trace_tests();
 void transpose_tests();
 void row_echelon_tests();
 void determinant_tests();
+void inverse_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_

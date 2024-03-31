@@ -19,5 +19,6 @@ int main() {
     transpose_tests();
     row_echelon_tests();
     determinant_tests();
+    inverse_tests();
     return 0;
 }
