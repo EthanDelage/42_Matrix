@@ -322,26 +322,27 @@ class Matrix {
         return transpose;
     }
 
-    Matrix<K>& row_echelon() {
+    Matrix<K> row_echelon() const {
+        Matrix<K> result(*this);
         size_t pivot_row = 0;
         K pivot;
         K factor;
 
         for (size_t column = 0; column < shape_.column && pivot_row < shape_.row; ++column) {
             for (size_t row = pivot_row; row < shape_.row; ++row) {
-                if (data_[row][column] != 0) {
-                    pivot = data_[row][column];
+                if (result[row][column] != 0) {
+                    pivot = result[row][column];
                     if (row != pivot_row) {
-                        swap_row(pivot_row, row);
+                        result.swap_row(pivot_row, row);
                     }
                     for (size_t j = 0; j < shape_.column; ++j) {
-                        data_[pivot_row][j] /= pivot;
+                        result[pivot_row][j] /= pivot;
                     }
                     for (size_t i = 0; i < shape_.row; ++i) {
                         if (i != pivot_row) {
-                            factor = data_[i][column];
+                            factor = result[i][column];
                             for (size_t j = column; j < shape_.column; ++j) {
-                                data_[i][j] -= (factor * data_[pivot_row][j]);
+                                result[i][j] -= (factor * result[pivot_row][j]);
                             }
                         }
                     }
@@ -349,7 +350,7 @@ class Matrix {
                 }
             }
         }
-        return *this;
+        return result;
     }
 
     K determinant() const {
@@ -397,7 +398,7 @@ class Matrix {
         for (size_t i = 0; i < dimension; ++i) {
             augmented[i][dimension + i] = 1.;
         }
-        augmented.row_echelon();
+        augmented = augmented.row_echelon();
 
         result.foreach([augmented, dimension](K& elem, size_t row, size_t column) {
             elem = augmented[row][dimension + column];
