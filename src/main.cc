@@ -23,6 +23,6 @@ int main() {
     inverse_tests();
     rank_tests();
 
-    std::cout << perspective_matrix(90, 1, 0, 10).transpose() << std::endl;
+    std::cout << perspective_matrix(3 * M_PI_2 / 2, 1, 0, 10).transpose() << std::endl;
     return 0;
 }
