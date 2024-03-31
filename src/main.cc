@@ -1,6 +1,7 @@
 //  Copyright (c) 2024 Ethan Delage
 
 #include "tests/tests.h"
+#include "./algebra.h"
 
 int main() {
     vector_code_constraints_tests();
@@ -21,5 +22,7 @@ int main() {
     determinant_tests();
     inverse_tests();
     rank_tests();
+
+    std::cout << perspective_matrix(90, 1, 0, 10).transpose() << std::endl;
     return 0;
 }

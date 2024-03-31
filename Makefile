@@ -15,6 +15,7 @@ BUILD_DIR	=		.build/
 #######################
 
 SRC			=		main.cc			\
+					projection.cc	\
 					tests/tests.cc	\
 					tests/code_constraints.cc	\
 					tests/basic_arithmetic.cc	\

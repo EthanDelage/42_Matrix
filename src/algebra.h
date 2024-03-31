@@ -8,6 +8,12 @@
 #include <string>
 
 #include "./vector.h"
+#include "./matrix.h"
+
+Matrix<float> perspective_matrix(float fov,
+                                float aspect_ratio,
+                                float near,
+                                float far);
 
 template <typename K>
 Vector<K> linear_combination(
