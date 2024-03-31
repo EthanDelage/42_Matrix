@@ -27,5 +27,6 @@ void transpose_tests();
 void row_echelon_tests();
 void determinant_tests();
 void inverse_tests();
+void rank_tests();
 
 #endif  //  SRC_TESTS_TESTS_H_

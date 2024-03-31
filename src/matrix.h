@@ -406,6 +406,28 @@ class Matrix {
         return result;
     }
 
+    size_t rank() const {
+        Matrix row_echelon_matrix(shape_);
+        size_t rank = 0;
+        bool is_null;
+
+        row_echelon_matrix = this->row_echelon();
+
+        for (size_t row = 0; row < shape_.row; ++row) {
+            is_null = true;
+            for (size_t column = 0; column < shape_.column; ++column) {
+                if (row_echelon_matrix[row][column] != 0) {
+                    is_null = false;
+                }
+            }
+            if (!is_null) {
+                ++rank;
+            }
+        }
+
+        return rank;
+    }
+
     template <typename Function>
     auto foreach(Function f)
             -> std::enable_if_t<std::is_invocable_v<Function, K&>> {

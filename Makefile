@@ -30,7 +30,8 @@ SRC			=		main.cc			\
 					tests/transpose.cc	\
 					tests/row_echelon.cc	\
 					tests/determinant.cc	\
-					tests/inverse.cc
+					tests/inverse.cc	\
+					tests/rank.cc
 
 OBJ			=		$(addprefix $(BUILD_DIR), $(SRC:.cc=.o))
 
